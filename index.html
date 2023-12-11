@@ -1,108 +1,149 @@
-<!DOCTYPE html>
 <html>
-<head>
-    <title>Paczuszka</title>
-    <style>
-        #game-container {
-            width: 1200px;
-            height: 300px;
-            border: 1px solid #000;
-            position: absolute;
-            background-color: bisque;
-        }
-        #dino {
-            width: 100px;
-            height: 100px;
-            background-image: url("majewski.png");
-            background-size: cover;
-            background-position: center;
-            position: absolute;
-            bottom: 0;
-        }
-        .cactus {
-            width: 100px;
-            height: 100px;
-            background-image: url("paczka.png");
-            background-size: cover;
-            background-position: center;
-            position: absolute;
-            bottom: 0;
-        }
-        #score {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div id="game-container">
-        <div id="dino"></div>
-        <div id="score">Wynik: 0</div>
-    </div>
+    <head>
+        <title>Wczasy nad Bałtykiem</title>
+    </head>
+
+    <body>
+        <h2>Wczasy na Bałtykiem</h2>
+        <div id="pole">
+            <div id="left">
+                <div id="formularz">
+                    <h3>Formularz zgłoszeniowy:</h3>
+                        <div id="ttb">
+                            <table id="tbl">
+                                <tr>
+                                    <td>Liczba dzieci (0-18 lat)</td>
+                                    <td><input id="dz" type="number"></td>
+                                </tr>
+                                <tr>
+                                    <td>Liczba dorosłych</td>
+                                    <td><input id="do" type="number"></td>
+                                </tr>
+                                <tr>
+                                    <td>Liczba noclegów</td>
+                                    <td><input id="no" type="number"></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <button onclick="oblicz()">Koszt wczasów</button>
+                </div>
+                <div id="zam">
+                    <h3>TWOJE ZAMÓWIENIE:</h3>
+                    <p id="ldz"></p>
+                    <p id="ldo"></p>
+                    <p id="lno"></p>
+                    <p id="lko"></p>
+                </div>
+            </div>
+
+           <div id="right">
+                <div id="galeria">
+                    <h4>Galeria zdjęć</h4>
+                    <table>
+                        <tr>
+                            <td><img src="img1.jpg"></td>
+                            <td><img src="img2.jpg"></td>
+                            <td><img src="img3.jpg"></td>
+                        </tr>
+                        <tr>
+                            <td><img src="img4.jpg"></td>
+                            <td><img src="img5.jpg"></td>
+                            <td><img src="img6.jpeg"></td>
+                        </tr>
+                    </table>
+                </div>
+           </div>
+        </div>
+        <footer><h1>Korona Tour Sp. z.o.o</h1></footer>
+    </body>
 
     <script>
-        const gameContainer = document.getElementById('game-container');
-        const dino = document.getElementById('dino');
-        let isJumping = false;
-        let score = 0;
-
-        document.addEventListener('keydown', function(event) {
-            if (event.keyCode === 32 && !isJumping) {
-                jump();
-            }
-        });
-
-        function jump() {
-            if (isJumping) {
-                return;
-            }
-            isJumping = true;
-            let jumpHeight = 0;
-            const jumpInterval = setInterval(function() {
-                dino.style.bottom = (jumpHeight) + 'px';
-                jumpHeight += 10;
-                if (jumpHeight >= 200) {
-                    clearInterval(jumpInterval);
-                    const fallInterval = setInterval(function() {
-                        dino.style.bottom = (jumpHeight) + 'px';
-                        jumpHeight -= 10;
-                        if (jumpHeight <= 0) {
-                            clearInterval(fallInterval);
-                            isJumping = false;
-                        }
-                    }, 20);
-                }
-            }, 20);
+        function oblicz(){
+            var dz = document.getElementById("dz").value;
+            var doo = document.getElementById("do").value;
+            var no = document.getElementById("no").value;
+            
+            var ldz = document.getElementById("ldz").innerHTML = "Liczba dzieci: " + dz;
+            var ldo = document.getElementById("ldo").innerHTML = "Liczba dorosłych: " + doo;
+            var lno = document.getElementById("lno").innerHTML = "Liczba noclegów: " + no;
+            var lko = document.getElementById("lko").innerHTML = "Koszt noclegów wynosi: " + (dz * 50 + dz * 75) * no + "zł";
         }
-
-        function createCactus() {
-            const cactus = document.createElement('div');
-            cactus.className = 'cactus';
-            cactus.style.left = '1200px';
-            gameContainer.appendChild(cactus);
-
-            const cactusMove = setInterval(function() {
-                const dinoPosition = parseInt(dino.style.bottom);
-                const cactusPosition = parseInt(cactus.style.left);
-
-                if (cactusPosition > 0 && cactusPosition < 100 && dinoPosition <= 100) {
-                    clearInterval(cactusMove);
-                    alert(`Zostałeś zabity przez paczuszkę. Wynik: ${score}`);
-                    location.reload();
-                }
-
-                if (cactusPosition < -40) {
-                    gameContainer.removeChild(cactus);
-                    score++;
-                    document.getElementById('score').innerText = `Wynik: ${score}`;
-                }
-
-                cactus.style.left = (cactusPosition - 10) + 'px';
-            }, 20);
-        }
-
-        setInterval(createCactus, 2000);
     </script>
-</body>
+
+    <style>
+        *{
+            line-height: 0.6;
+            font-size: 12px;
+        }
+        #pole{
+            display: flex;
+            height: 90%;
+        }
+        footer{
+            bottom: 20px;
+        }
+        h1{
+            font-size: 24px;
+            color: rgb(224, 174, 8);
+            text-align: center;
+            font-family: Apple Chancery, cursive;
+        }
+        #left, #right{
+            width: 50%;
+        }
+        h2{
+            text-align: center;
+            font-size: 22px;
+            color:aliceblue
+        }
+        h3{
+            color: rgb(8, 116, 224);
+            font-size: 18px;
+        }
+        #zam, #formularz{
+            text-align: center;
+        }
+        button{
+            padding: 16px 8px;
+            background-color: blueviolet;
+            border: 1px solid white;
+            color: white;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        input{
+            width: 40px;
+        }
+        table{
+            text-align: center;
+        }
+        body{
+            background: linear-gradient(rgb(0, 225, 255), yellow);
+        }
+        img{
+            width: 150px;
+            height: 150px;
+            border-radius: 5px;
+        }
+        #galeria{
+            height: 300px;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: fit-content;
+            border-radius: 5px;
+            background-color: aliceblue;
+            padding-top: 10px;
+        }
+        h4{
+            text-align: center;
+        }
+        #tbl{
+            border-spacing: 20px 0;
+        }
+        #ttb{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
 </html>
